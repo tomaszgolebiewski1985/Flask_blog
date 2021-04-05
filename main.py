@@ -7,7 +7,7 @@ from datetime import datetime
 
 # create flask instance
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///users.db'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:password@localhost/our_users'
 # Creating Secret Key (in real project dont push this to repository)
 app.config['SECRET_KEY'] = "my super secret key that no one is supposed to know" 
 
@@ -41,7 +41,7 @@ class Namer_form(FlaskForm):
 
 def index():
 	first_name = "Tomasz"
-	stuff = "This is bold text"
+	stuff = "Page made with Python and Flask"
 	favorite = ["Pepperoni", "Cheese", "Hawaii"]
 	return render_template("index.html", first_name=first_name, stuff=stuff, favorite=favorite)
 
