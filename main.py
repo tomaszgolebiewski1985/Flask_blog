@@ -1,4 +1,4 @@
-from flask import Flask, render_template, flash
+from flask import Flask, render_template, flash, request
 from flask_wtf import FlaskForm
 from wtforms import StringField, SubmitField
 from wtforms.validators import DataRequired
@@ -7,7 +7,7 @@ from datetime import datetime
 
 # create flask instance
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:password@localhost/our_users'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:Phantom#1985@localhost/our_users'
 # Creating Secret Key (in real project dont push this to repository)
 app.config['SECRET_KEY'] = "my super secret key that no one is supposed to know" 
 
@@ -35,10 +35,6 @@ class Namer_form(FlaskForm):
 
 # create a route decorator
 @app.route('/')
-
-# def index():
-#    return "<h1>Hello World</h1>"
-
 def index():
 	first_name = "Tomasz"
 	stuff = "Page made with Python and Flask"
@@ -87,3 +83,20 @@ def name():
 		form.name.data = ''
 		flash("Form Submitted Succesfully!")
 	return render_template("name.html", name=name, form=form)
+
+@app.route('/update/<int:id>', methods=['GET', 'POST'])
+def update(id):
+	form = User_form()
+	name_to_update = Users.query.get_or_404(id)
+	if request.method == "POST":
+		name_to_update.name = request.form['name']
+		name_to_update.email = request.form['email']
+		try:
+			db.session.commit()
+			flash("Users Updated Succesfully!!!")
+			return render_template("update.html", form=form, name_to_update=name_to_update)
+		except:
+			flash("Error! Looks like there was a problem...! Try Again!")
+			return render_template("update.html", form=form, name_to_update=name_to_update)
+	else:
+		return render_template("update.html", form=form, name_to_update=name_to_update)
