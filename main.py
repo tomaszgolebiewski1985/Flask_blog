@@ -7,7 +7,7 @@ from datetime import datetime
 
 # create flask instance
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:Phantom#1985@localhost/our_users'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:password@localhost/our_users'
 # Creating Secret Key (in real project dont push this to repository)
 app.config['SECRET_KEY'] = "my super secret key that no one is supposed to know" 
 
